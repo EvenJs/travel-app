@@ -19,7 +19,7 @@ const companies = [
   { src: image4, title: 'Facebook' },
 ];
 
-export const BusinessPartners = () => {
+export const BusinessPartners : React.FC = () => {
   return (
     <div className={sytles.content}>
       <Divider orientation="left">

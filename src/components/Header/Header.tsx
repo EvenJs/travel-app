@@ -1,14 +1,24 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable import/prefer-default-export */
 import React from 'react';
 import {
   Input, Layout, Typography, Menu, Button, Dropdown,
 } from 'antd';
 import { GlobalOutlined } from '@ant-design/icons';
+import {
+  useHistory,
+// useHistory, useLocation, useRouteMatch, useParams,
+} from 'react-router-dom';
 import logo from '../../assets/logo.svg';
 import styles from './header.module.css';
 
 export const Header : React.FC = () => {
-  console.log('hello');
+  const history = useHistory();
+  // const location = useLocation();
+  // const prams = useParams();
+  // const match = useRouteMatch();
+
   return (
     <div className={styles['app-header']}>
       {/* top-header */}
@@ -28,16 +38,18 @@ export const Header : React.FC = () => {
             语言
           </Dropdown.Button>
           <Button.Group className={styles['button-group']}>
-            <Button>注册</Button>
-            <Button>登录</Button>
+            <Button onClick={() => history.push('register')}>注册</Button>
+            <Button onClick={() => history.push('signIn')}>登录</Button>
           </Button.Group>
         </div>
       </div>
       <Layout.Header className={styles['main-header']}>
-        <img src={logo} alt="logo" className={styles['App-logo']} />
-        <Typography.Title level={3} className={styles.title}>
-          React 旅游网
-        </Typography.Title>
+        <span onClick={() => history.push('/')}>
+          <img src={logo} alt="logo" className={styles['App-logo']} />
+          <Typography.Title level={3} className={styles.title}>
+            React 旅游网
+          </Typography.Title>
+        </span>
         <Input.Search
           placeholder="请输入旅游目的地，主题，或关键字"
           className={styles['search-input']}

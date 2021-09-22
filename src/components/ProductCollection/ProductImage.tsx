@@ -1,10 +1,13 @@
+/* eslint-disable jsx-a11y/no-static-element-interactions */
+/* eslint-disable jsx-a11y/aria-role */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable arrow-body-style */
 /* eslint-disable import/prefer-default-export */
 import { Image, Typography } from 'antd';
 import React from 'react';
+import { withRouter, RouteComponentProps, Link } from 'react-router-dom';
 
-interface PropType {
+interface PropType extends RouteComponentProps {
   id: string | number;
   size: 'large' | 'small';
   imageSrc: string;
@@ -12,11 +15,11 @@ interface PropType {
   title: string;
 }
 
-export const ProductImage : React.FC<PropType> = ({
-  id, size, imageSrc, price, title,
+const ProductImageComponent: React.FC<PropType> = ({
+  id, size, imageSrc, price, title, history, location, match,
 }) => {
   return (
-    <>
+    <Link to={`detail/${id}`}>
       {size === 'large' ? (
         <Image src={imageSrc} height={285} width={490} />
       ) : (
@@ -28,6 +31,8 @@ export const ProductImage : React.FC<PropType> = ({
           {` ¥ ${price} 起`}
         </Typography.Text>
       </div>
-    </>
+    </Link>
   );
 };
+
+export const ProductImage = withRouter(ProductImageComponent);

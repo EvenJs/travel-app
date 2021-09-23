@@ -1,65 +1,68 @@
+/* eslint-disable arrow-body-style */
 /* eslint-disable react/jsx-one-expression-per-line */
 /* eslint-disable react/prefer-stateless-function */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable import/prefer-default-export */
 import React from 'react';
+import { Dispatch } from 'redux';
 import {
   Input, Layout, Typography, Menu, Button, Dropdown,
 } from 'antd';
 import { GlobalOutlined } from '@ant-design/icons';
 import {
   withRouter, RouteComponentProps,
-// useHistory, useLocation, useRouteMatch, useParams,
 } from 'react-router-dom';
 import { withTranslation, WithTranslation } from 'react-i18next';
-import store from '../../redux/store';
-import { LanguageState } from '../../redux/languageReducer';
+import { connect } from 'react-redux';
+import { RootState } from '../../redux/store';
+// import { LanguageState } from '../../redux/language/languageReducer';
+import { addLanguageActionCreator, changeLanguageActionCreator } from '../../redux/language/languageActions';
 import logo from '../../assets/logo.svg';
 import styles from './header.module.css';
 
-interface State extends LanguageState {}
+// interface State extends LanguageState {}
 
-class HeaderComponent extends React.Component<RouteComponentProps & WithTranslation, State> {
-  constructor(props: any) {
-    super(props);
-    const storeState = store.getState();
-
-    this.state = {
-      language: storeState.language,
-      languageList: storeState.languageList,
-    };
-    store.subscribe(this.handleStoreChange);
-  }
-
-  handleStoreChange = () => {
-    const storeState = store.getState();
-    this.setState({
-      language: storeState.language,
-      languageList: storeState.languageList,
-    });
+const mapStateToProps = (state: RootState) => {
+  return {
+    language: state.language,
+    languageList: state.languageList,
   };
+};
 
+const mapDispatchToProps = (dispatch: Dispatch) => {
+  return {
+    changeLanguage: (code: 'zh' | 'en') => {
+      const action = changeLanguageActionCreator(code);
+      dispatch(action);
+    },
+    addLanguage: (name: string, code: string) => {
+      const action = addLanguageActionCreator(name, code);
+      dispatch(action);
+    },
+  };
+};
+
+type PropsType = RouteComponentProps &
+WithTranslation &
+ReturnType<typeof mapStateToProps> &
+ReturnType<typeof mapDispatchToProps>;
+
+class HeaderComponent extends React.Component<PropsType> {
   menuClickHandler = (e:any) => {
+    const { addLanguage, changeLanguage } = this.props;
     if (e.key === 'new') {
-      const action = {
-        type: 'add_language',
-        payload: { code: 'new_lang', name: '新语言' },
-      };
-      store.dispatch(action);
+      addLanguage('新语言', 'new_lang');
     } else {
-      const action = {
-        type: 'change_language',
-        payload: e.key,
-      };
-
-      store.dispatch(action);
+      changeLanguage(e.key);
     }
   };
 
   render() {
-    const { history, t } = this.props;
-    const { languageList, language } = this.state;
+    const {
+      history, t, languageList, language,
+    } = this.props;
+    // const { languageList, language } = this.state;
     return (
       <div className={styles['app-header']}>
         {/* top-header */}
@@ -119,4 +122,6 @@ class HeaderComponent extends React.Component<RouteComponentProps & WithTranslat
   }
 }
 
-export const Header = withTranslation()(withRouter(HeaderComponent));
+export const Header = connect(mapStateToProps, mapDispatchToProps)(
+  withTranslation()(withRouter(HeaderComponent)),
+);

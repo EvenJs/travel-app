@@ -25,8 +25,8 @@ import styles from './header.module.css';
 
 const mapStateToProps = (state: RootState) => {
   return {
-    language: state.language,
-    languageList: state.languageList,
+    language: state.language.language,
+    languageList: state.language.languageList,
   };
 };
 
@@ -49,7 +49,7 @@ ReturnType<typeof mapStateToProps> &
 ReturnType<typeof mapDispatchToProps>;
 
 class HeaderComponent extends React.Component<PropsType> {
-  menuClickHandler = (e:any) => {
+  menuClickHandler = (e: any) => {
     const { addLanguage, changeLanguage } = this.props;
     if (e.key === 'new') {
       addLanguage('新语言', 'new_lang');

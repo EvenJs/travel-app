@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import {
   FETCH_RECOMMEND_PRODUCTS_START,
   FETCH_RECOMMEND_PRODUCTS_SUCCESS,

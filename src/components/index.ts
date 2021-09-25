@@ -4,3 +4,4 @@ export * from './Carousel';
 export * from './SideMenu';
 export * from './ProductCollection';
 export * from './BusinessPartners';
+export * from './ProductIntro';

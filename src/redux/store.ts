@@ -1,13 +1,16 @@
-import { createStore, combineReducers, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
+import { combineReducers } from '@reduxjs/toolkit';
 import thunk from 'redux-thunk';
 import languageReducer from './language/languageReducer';
 // eslint-disable-next-line import/no-cycle
 import recommendProductsReducer from './recommendProducts/recommendProductsReducer';
 import { actionLog } from './middlewares/actionLog';
+import { productDetailSlice } from './productDetail/slice';
 
 const rootReducer = combineReducers({
   language: languageReducer,
   recommendProducts: recommendProductsReducer,
+  productDetai: productDetailSlice.reducer,
 });
 
 const store = createStore(rootReducer, applyMiddleware(thunk, actionLog));

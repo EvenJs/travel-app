@@ -5,8 +5,9 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable arrow-body-style */
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import axios from 'axios';
+import { useDispatch } from 'react-redux';
 import { RouteComponentProps, useParams } from 'react-router';
 import {
   Spin, Row, Col, DatePicker, Divider, Typography, Anchor, Menu,
@@ -17,6 +18,8 @@ import {
   Header, Footer, ProductIntro, ProductComments,
 } from '../../components';
 import commentMockData from './mockup';
+import { productDetailSlice } from '../../redux/productDetail/slice';
+import { useSelector } from '../../redux/hooks';
 
 const { RangePicker } = DatePicker;
 
@@ -26,22 +29,31 @@ interface MatchParams {
 
 export const DetailPage: React.FC<RouteComponentProps<MatchParams>> = () => {
   const { touristRouteId } = useParams<MatchParams>();
-  const [loading, setLoading] = useState<boolean>(true);
-  const [product, setProduct] = useState<any>(null);
-  const [error, setError] = useState<string | null>(null);
+  // const [loading, setLoading] = useState<boolean>(true);
+  // const [product, setProduct] = useState<any>(null);
+  // const [error, setError] = useState<string | null>(null);
+
+  const loading = useSelector((state) => state.productDetai.loading);
+  const error = useSelector((state) => state.productDetai.error);
+  const product = useSelector((state) => state.productDetai.data);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
+      // setLoading(true);
+      dispatch(productDetailSlice.actions.fetchStart());
       try {
         const { data } = await axios.get(
           `http://123.56.149.216:8089/api/touristRoutes/${touristRouteId}`,
         );
-        setProduct(data);
-        setLoading(false);
+        // setProduct(data);
+        // setLoading(false);
+        dispatch(productDetailSlice.actions.fetchSuccess(data));
       } catch (error) {
-        setError(error.message);
-        setLoading(false);
+        // setError(error.message);
+        // setLoading(false);
+        dispatch(productDetailSlice.actions.fetchFail(error.message));
       }
     };
     fetchData();

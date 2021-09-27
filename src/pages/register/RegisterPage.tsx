@@ -1,6 +1,10 @@
 /* eslint-disable import/prefer-default-export */
 import React from 'react';
+import { UserLayout } from '../../layouts/UserLayout';
+import { RegisterForm } from './RgisterForm';
 
 export const RegisterPage : React.FC = () => (
-  <h1>注册页面</h1>
+  <UserLayout>
+    <RegisterForm />
+  </UserLayout>
 );

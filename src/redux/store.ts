@@ -7,12 +7,14 @@ import recommendProductsReducer from './recommendProducts/recommendProductsReduc
 import { actionLog } from './middlewares/actionLog';
 import { productDetailSlice } from './productDetail/slice';
 import { productSearchSlice } from './productSearch/slice';
+import { userSlice } from './user/slice';
 
 const rootReducer = combineReducers({
   language: languageReducer,
   recommendProducts: recommendProductsReducer,
   productDetai: productDetailSlice.reducer,
   productSearch: productSearchSlice.reducer,
+  user: userSlice.reducer,
 });
 
 // const store = createStore(rootReducer, applyMiddleware(thunk, actionLog));

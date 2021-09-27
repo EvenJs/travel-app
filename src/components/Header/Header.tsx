@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable import/prefer-default-export */
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 // import { Dispatch } from 'redux';
 import {
   Input, Layout, Typography, Menu, Button, Dropdown,
@@ -11,11 +11,16 @@ import { GlobalOutlined } from '@ant-design/icons';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { useTranslation } from 'react-i18next';
+import jwt_decode, { JwtPayload as DefaultJwtPayload } from 'jwt-decode';
 import { useSelector } from '../../redux/hooks';
 // import { LanguageActionTypes } from '../../redux/language/languageActions';
 import logo from '../../assets/logo.svg';
 import styles from './header.module.css';
 import { addLanguageActionCreator, changeLanguageActionCreator } from '../../redux/language/languageActions';
+
+interface JwtPayload extends DefaultJwtPayload {
+  username: string;
+}
 
 export const Header : React.FC = () => {
   const history = useHistory();
@@ -27,6 +32,16 @@ export const Header : React.FC = () => {
   const dispatch = useDispatch();
   // const dispatch = useDispatch<Dispatch<LanguageActionTypes>>();
   const { t } = useTranslation();
+
+  const jwt = useSelector((state) => state.user.token);
+  const [username, setUsername] = useState('');
+
+  useEffect(() => {
+    if (jwt) {
+      const token = jwt_decode<JwtPayload>(jwt);
+      setUsername(token.username);
+    }
+  }, [jwt]);
 
   const menuClickHandler = (e:any) => {
     if (e.key === 'new') {

@@ -39,7 +39,7 @@ export const searchProduct = createAsyncThunk(
     //   // setLoading(false);
     //   thunkAPI.dispatch(productDetailSlice.actions.fetchFail(error.message));
     // }
-    let url = `http://123.56.149.216:8080/api/touristRoutes?pageNumber=${paramaters.nextPage}&pageSize=${paramaters.pageSize}`;
+    let url = `http://123.56.149.216:8089/api/touristRoutes?pageNumber=${paramaters.nextPage}&pageSize=${paramaters.pageSize}`;
     if (paramaters.keywords) {
       url += `&keyword=${paramaters.keywords}`;
     }

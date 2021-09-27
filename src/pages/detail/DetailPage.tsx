@@ -6,7 +6,7 @@
 /* eslint-disable import/prefer-default-export */
 /* eslint-disable arrow-body-style */
 import React, { useEffect } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { RouteComponentProps, useParams } from 'react-router';
 import {
@@ -18,7 +18,7 @@ import {
   Header, Footer, ProductIntro, ProductComments,
 } from '../../components';
 import commentMockData from './mockup';
-import { productDetailSlice } from '../../redux/productDetail/slice';
+import { getProductDetail } from '../../redux/productDetail/slice';
 import { useSelector } from '../../redux/hooks';
 
 const { RangePicker } = DatePicker;
@@ -40,23 +40,7 @@ export const DetailPage: React.FC<RouteComponentProps<MatchParams>> = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const fetchData = async () => {
-      // setLoading(true);
-      dispatch(productDetailSlice.actions.fetchStart());
-      try {
-        const { data } = await axios.get(
-          `http://123.56.149.216:8089/api/touristRoutes/${touristRouteId}`,
-        );
-        // setProduct(data);
-        // setLoading(false);
-        dispatch(productDetailSlice.actions.fetchSuccess(data));
-      } catch (error) {
-        // setError(error.message);
-        // setLoading(false);
-        dispatch(productDetailSlice.actions.fetchFail(error.message));
-      }
-    };
-    fetchData();
+    dispatch(getProductDetail(touristRouteId));
   }, []);
 
   if (loading) {
